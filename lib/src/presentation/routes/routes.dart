@@ -44,14 +44,17 @@ class RouteGenerator {
       GoRoute(
         path: Routes.movieDetail,
         builder: (context, state) {
-          return BlocProvider(
-            create: (context) => getIt<HomeCubit>(),
-            child: state.extra.runtimeType == Movie
-                ? MovieDetailsScreen(
-                    movie: state.extra as Movie,
-                  )
-                : null,
-          );
+          if (state.extra.runtimeType == Movie) {
+            return MovieDetailsScreen(
+              movie: state.extra as Movie,
+            );
+          } else {
+            return const Material(
+              child: Center(
+                child: Text('No movie found'),
+              ),
+            );
+          }
         },
       ),
     ],

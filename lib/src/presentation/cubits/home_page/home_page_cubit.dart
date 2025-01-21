@@ -18,10 +18,10 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
   final PagingController<int, Movie> _pagingController =
       PagingController(firstPageKey: 1);
 
-  List<Movie> _visitedMovies = []; // Store visited movies
+  List<Movie> visitedMovies = [];
 
   HomeCubit(this._getMoviesList) : super(HomeInitial()) {
-    hydrate(); // Restore state from local storage
+    hydrate();
   }
 
   void initialize() {
@@ -52,19 +52,23 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
   }
 
   void markAsVisited(Movie movie) {
-    if (!_visitedMovies.any((visited) => visited.id == movie.id)) {
-      _visitedMovies.add(movie);
-      emit(HomeVisitedUpdated(_visitedMovies));
+    if (!visitedMovies.any((visited) => visited.id == movie.id)) {
+      log('markAsVisited: ${movie.title}');
+      visitedMovies.add(movie);
+      emit(HomeVisitedUpdated(visitedMovies));
+      emit(HomeLoaded(_pagingController));
+    } else {
+      log('already present');
     }
   }
 
-  List<Movie> get visitedMovies => _visitedMovies;
+  // List<Movie> get visitedMovies => visitedMovies;
 
   @override
   HomeState? fromJson(Map<String, dynamic> json) {
     try {
       final visitedMoviesJson = json['visitedMovies'] as List<dynamic>?;
-      _visitedMovies = visitedMoviesJson != null
+      visitedMovies = visitedMoviesJson != null
           ? visitedMoviesJson.map((e) => Movie.fromJson(e)).toList()
           : [];
       return HomeLoaded(_pagingController);
@@ -77,7 +81,17 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
   @override
   Map<String, dynamic>? toJson(HomeState state) {
     return {
-      'visitedMovies': _visitedMovies.map((movie) => movie.toJson()).toList(),
+      'visitedMovies': visitedMovies.map((movie) => movie.toJson()).toList(),
     };
+  }
+
+  void removeFromVisited(Movie movie) {
+    final isRemoved = visitedMovies.remove(movie);
+    log(
+      isRemoved.toString(),
+      name: "removeFromVisited: ${movie.title} Left: ${visitedMovies.length}",
+    );
+    emit(HomeVisitedUpdated(visitedMovies));
+    emit(HomeLoaded(_pagingController));
   }
 }

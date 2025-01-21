@@ -8,24 +8,52 @@ class VisitedMoviesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visitedMovies = context.read<HomeCubit>().visitedMovies;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Visited Movies"),
       ),
-      body: visitedMovies.isEmpty
-          ? const Center(
+      body: BlocBuilder<HomeCubit, HomeState>(
+        // buildWhen: (previous, current) => current is HomeVisitedUpdated,
+        builder: (context, state) {
+          final homeCubit = context.read<HomeCubit>();
+          final visitedMovies = homeCubit.visitedMovies;
+
+          if (visitedMovies.isEmpty) {
+            return const Center(
               child: Text(
                 "No movies visited yet.",
                 style: TextStyle(fontSize: 18),
               ),
-            )
-          : ListView.builder(
-              itemCount: visitedMovies.length,
-              itemBuilder: (context, index) =>
-                  buildMovieCard(context, visitedMovies[index]),
-            ),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: visitedMovies.length,
+            itemBuilder: (context, index) {
+              final movie = visitedMovies[index];
+              return Dismissible(
+                key: Key(movie.id.toString()),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                onDismissed: (direction) {
+                  homeCubit.removeFromVisited(movie);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("${movie.title} removed from visited."),
+                    ),
+                  );
+                },
+                child: buildMovieCard(context, visitedMovies[index]),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
