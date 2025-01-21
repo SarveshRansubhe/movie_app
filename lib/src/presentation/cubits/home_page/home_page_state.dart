@@ -1,35 +1,28 @@
 part of 'home_page_cubit.dart';
 
-sealed class HomeState extends Equatable {
+abstract class HomeState extends Equatable {
   const HomeState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class HomeInitial extends HomeState {
-  const HomeInitial();
-}
+class HomeInitial extends HomeState {}
 
-final class HomeLoading extends HomeState {
-  @override
-  List<Object> get props => [];
-}
-
-final class HomeLoaded extends HomeState {
+class HomeLoaded extends HomeState {
   final PagingController<int, Movie> pagingController;
 
-  // final List<Movie> movies;
-
   const HomeLoaded(this.pagingController);
+
   @override
-  List<Object> get props => [pagingController];
+  List<Object?> get props => [pagingController];
 }
 
-final class HomeError extends HomeState {
-  final AppError appError;
+class HomeVisitedUpdated extends HomeState {
+  final List<Movie> visitedMovies;
 
-  const HomeError(this.appError);
+  const HomeVisitedUpdated(this.visitedMovies);
+
   @override
-  List<Object> get props => [appError];
+  List<Object?> get props => [visitedMovies];
 }

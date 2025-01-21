@@ -4,7 +4,7 @@ import 'package:movie_app/config_main.dart';
 import 'package:movie_app/src/presentation/routes/routes.dart';
 
 void main() async {
-  configMain();
+  await configMain();
   runApp(const MainApp());
 }
 
