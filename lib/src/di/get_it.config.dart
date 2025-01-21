@@ -46,8 +46,7 @@ _i174.GetIt $initGetIt(
       () => _i870.AccountRepositoryImpl(gh<_i300.AccountRemoteDataSource>()));
   gh.factory<_i854.GetMoviesList>(
       () => _i854.GetMoviesList(gh<_i64.AccountRepository>()));
-  gh.factory<_i649.HomePageCubit>(
-      () => _i649.HomePageCubit(gh<_i854.GetMoviesList>()));
+  gh.factory<_i649.HomeCubit>(() => _i649.HomeCubit(gh<_i854.GetMoviesList>()));
   return getIt;
 }
 

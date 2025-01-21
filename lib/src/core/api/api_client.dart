@@ -30,7 +30,7 @@ class ApiClient {
           },
         ),
       );
-      return extractData ? response.data['response'] : response.data;
+      return extractData ? response.data['results'] : response.data;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout) {

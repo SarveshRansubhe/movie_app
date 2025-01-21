@@ -7,7 +7,9 @@ sealed class HomeState extends Equatable {
   List<Object> get props => [];
 }
 
-final class HomeInitial extends HomeState {}
+final class HomeInitial extends HomeState {
+  const HomeInitial();
+}
 
 final class HomeLoading extends HomeState {
   @override
@@ -15,11 +17,13 @@ final class HomeLoading extends HomeState {
 }
 
 final class HomeLoaded extends HomeState {
-  final List<Movie> movies;
+  final PagingController<int, Movie> pagingController;
 
-  const HomeLoaded(this.movies);
+  // final List<Movie> movies;
+
+  const HomeLoaded(this.pagingController);
   @override
-  List<Object> get props => [movies];
+  List<Object> get props => [pagingController];
 }
 
 final class HomeError extends HomeState {
