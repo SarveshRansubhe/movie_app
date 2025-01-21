@@ -1,5 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_app/src/data/model/movie.dart';
 import 'package:movie_app/src/presentation/screen/cached_image.dart';
 
@@ -84,6 +85,37 @@ class MovieDetailsScreen extends StatelessWidget {
                       "Vote Average", "${movie.voteAverage ?? 0}/10"),
                   _buildDetailRow("Vote Count", movie.voteCount?.toString()),
                 ],
+              ),
+            ),
+          ),
+          // Back Button
+          Positioned(
+            top: 16,
+            left: 16,
+            child: SafeArea(
+              child: GestureDetector(
+                onTap: () {
+                  context.pop();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 32,
+                  ),
+                ),
               ),
             ),
           ),
