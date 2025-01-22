@@ -18,7 +18,7 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
   final PagingController<int, Movie> _pagingController =
       PagingController(firstPageKey: 1);
 
-  List<Movie> visitedMovies = [];
+  static List<Movie> visitedMovies = [];
 
   HomeCubit(this._getMoviesList) : super(HomeInitial()) {
     hydrate();
@@ -56,13 +56,10 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
       log('markAsVisited: ${movie.title}');
       visitedMovies.add(movie);
       emit(HomeVisitedUpdated(visitedMovies));
-      emit(HomeLoaded(_pagingController));
     } else {
       log('already present');
     }
   }
-
-  // List<Movie> get visitedMovies => visitedMovies;
 
   @override
   HomeState? fromJson(Map<String, dynamic> json) {
@@ -92,6 +89,5 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
       name: "removeFromVisited: ${movie.title} Left: ${visitedMovies.length}",
     );
     emit(HomeVisitedUpdated(visitedMovies));
-    emit(HomeLoaded(_pagingController));
   }
 }

@@ -16,7 +16,7 @@ class VisitedMoviesPage extends StatelessWidget {
         // buildWhen: (previous, current) => current is HomeVisitedUpdated,
         builder: (context, state) {
           final homeCubit = context.read<HomeCubit>();
-          final visitedMovies = homeCubit.visitedMovies;
+          final visitedMovies = HomeCubit.visitedMovies;
 
           if (visitedMovies.isEmpty) {
             return const Center(
