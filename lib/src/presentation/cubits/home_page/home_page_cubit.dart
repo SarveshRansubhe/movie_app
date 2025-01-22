@@ -56,6 +56,7 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
       log('markAsVisited: ${movie.title}');
       visitedMovies.add(movie);
       emit(HomeVisitedUpdated(visitedMovies));
+      emit(HomeLoaded(_pagingController));
     } else {
       log('already present');
     }
@@ -89,5 +90,6 @@ class HomeCubit extends Cubit<HomeState> with HydratedMixin {
       name: "removeFromVisited: ${movie.title} Left: ${visitedMovies.length}",
     );
     emit(HomeVisitedUpdated(visitedMovies));
+    emit(HomeLoaded(_pagingController));
   }
 }
